@@ -4,7 +4,7 @@ import os
 
 ########################################################################
 ### SETTING ###
-SHOW_REAL_VIDEO = True
+SHOW_REAL_VIDEO = False   # Set this to True to get real camera video from cv2
 
 ########################################################################
 
