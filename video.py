@@ -34,8 +34,11 @@ def convert_to_ascii(inputGrays):
     return outputArray
 
 def printArray(inputAsciiArray):
+    fullImage = []
     for row in inputAsciiArray:
-        print(''.join(row))
+        fullImage.append(''.join(row))
+    os.system("clear")
+    print('\n'.join(fullImage))
 
 
 
