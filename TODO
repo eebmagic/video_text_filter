@@ -1,7 +1,0 @@
--Do the math to convert image resolution to terminal 
-resolution
--Create func to take flat list of grayscale values (0-255) and 
-return a string of chars that reflect values
-
--possibly move resolution determination outside of loop for 
-effeciency

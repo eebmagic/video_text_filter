@@ -11,34 +11,53 @@ def flattenList(inputList):
         output = temp[:]            
     return output
 
+def convert_to_ascii(inputGrays):
+    # 17-long
+    order = [' ', '.', "'", ',', ':', ';', 'c', 'l', 'x', 'o', 'k', 'X', 'd', 'O', '0', 'K', 'N']
+
+    outputArray = []
+
+    for row in inputGrays:
+        adjusted_row = [int(x/(255/16)) for x in row]
+        newRow = []
+        for i in adjusted_row:
+            newRow.append(order[i])
+        outputArray.append(newRow)
+
+    #print output
+    return outputArray
+
+def printArray(inputAsciiArray):
+    for row in inputAsciiArray:
+        print(''.join(row))
 
 
+
+#Get screensize for reduction
+screen_height,  screen_width = os.popen('stty size', 'r').read().split()
+print(screen_width, screen_height)
 
 cap = cv2.VideoCapture(0)
 
 while(True):
     # Capture frame-by-frame
+    #Get image data
     ret, frame = cap.read()
 
     # Our operations on the frame come here
+    #Convert data to grayscale
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     
-    # Get image size and window size
-    org_height = len(gray.tolist())
-    org_width = len(gray.tolist()[0])
-    screen_height,  screen_width = os.popen('stty size', 'r').read().split()
-    
-    
-    print(screen_width, screen_height)
-    print(org_width, org_height)
-
 
     # Display the resulting frame
     cv2.imshow('frame',gray)
 
-    #0-255
-    flatGray = flattenList(gray.tolist())
+    #Reduce grayscale array to proper resolution
+    reduced = cv2.resize(gray, (int(screen_width), int(screen_height)))
 
+    #Plug in reduced resolution numpy array for ascii converter func
+    converted = convert_to_ascii(reduced)
+    printArray(converted)
 
 
     print("")
