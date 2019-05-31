@@ -2,6 +2,13 @@ import numpy as np
 import cv2
 import os
 
+########################################################################
+### SETTING ###
+SHOW_REAL_VIDEO = True
+
+########################################################################
+
+
 def flattenList(inputList):
     output = inputList[:]
     while type(output[0]) == list:
@@ -50,7 +57,8 @@ while(True):
     
 
     # Display the resulting frame
-    cv2.imshow('frame',gray)
+    if SHOW_REAL_VIDEO:
+        cv2.imshow('frame',gray)
 
     #Reduce grayscale array to proper resolution
     reduced = cv2.resize(gray, (int(screen_width), int(screen_height)))
