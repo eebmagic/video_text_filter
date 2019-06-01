@@ -38,17 +38,16 @@ def printArray(inputAsciiArray):
     for row in inputAsciiArray:
         fullImage.append(''.join(row))
     os.system("clear")
-    print('\n'.join(fullImage))
+    print('\n'.join(fullImage), end='')
 
 
-
-#Get screensize for reduction
-screen_height,  screen_width = os.popen('stty size', 'r').read().split()
-print(screen_width, screen_height)
 
 cap = cv2.VideoCapture(0)
 
 while(True):
+    #Get screensize for reduction
+    screen_height,  screen_width = os.popen('stty size', 'r').read().split()
+    
     # Capture frame-by-frame
     #Get image data
     ret, frame = cap.read()
