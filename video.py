@@ -7,44 +7,23 @@ SHOW_REAL_VIDEO = False   # Set this to True to get real camera video from cv2
 
 ########################################################################
 
-
-def flattenList(inputList):
-    output = inputList[:]
-    while type(output[0]) == list:
-        temp = []
-        for sub in output:
-            temp += sub
-        output = temp[:]            
-    return output
-
-def convert_to_ascii(inputGrays):
+def convert_row_to_ascii(row):
     # 17-long
-    order = [' ', '.', "'", ',', ':', ';', 'c', 'l', 'x', 'o', 'k', 'X', 'd', 'O', '0', 'K', 'N']
+    ORDER = (' ', '.', "'", ',', ':', ';', 'c', 'l', 'x', 'o', 'k', 'X', 'd', 'O', '0', 'K', 'N')
+    return tuple(ORDER[int(x/(255/16))] for x in row)
 
-    outputArray = []
+def convert_to_ascii(input_grays):
+    return tuple(convert_row_to_ascii(row) for row in input_grays)
 
-    for row in inputGrays:
-        adjusted_row = [int(x/(255/16)) for x in row]
-        newRow = []
-        for i in adjusted_row:
-            newRow.append(order[i])
-        outputArray.append(newRow)
-
-    #print output
-    return outputArray
-
-def printArray(inputAsciiArray):
-    fullImage = []
-    for row in inputAsciiArray:
-        fullImage.append(''.join(row))
+def print_array(input_ascii_array):
     os.system("clear")
-    print('\n'.join(fullImage), end='')
+    print('\n'.join((''.join(row) for row in input_ascii_array)), end='')
 
 
 
 cap = cv2.VideoCapture(0)
 
-while(True):
+while(cv2.waitKey(1) & 0xFF != ord('q')):
     #Get screensize for reduction
     screen_height,  screen_width = os.popen('stty size', 'r').read().split()
     
@@ -66,13 +45,8 @@ while(True):
 
     #Plug in reduced resolution numpy array for ascii converter func
     converted = convert_to_ascii(reduced)
-    printArray(converted)
-
-
+    print_array(converted)
     print("")
-    #Test for break
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
 
 # When everything done, release the capture
 cap.release()
