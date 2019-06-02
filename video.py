@@ -3,14 +3,14 @@ import os
 
 ########################################################################
 ### SETTING ###
-SHOW_REAL_VIDEO = False   # Set this to True to get real camera video from cv2
+SHOW_REAL_VIDEO = True   # Set this to True to get real camera video from cv2
 
 ########################################################################
 
 def convert_row_to_ascii(row):
     # 17-long
     ORDER = (' ', '.', "'", ',', ':', ';', 'c', 'l', 'x', 'o', 'k', 'X', 'd', 'O', '0', 'K', 'N')
-    return tuple(ORDER[int(x/(255/16))] for x in row)
+    return tuple(ORDER[int(x/(255/16))] for x in row)[::-1]
 
 def convert_to_ascii(input_grays):
     return tuple(convert_row_to_ascii(row) for row in input_grays)
@@ -35,18 +35,16 @@ while(cv2.waitKey(1) & 0xFF != ord('q')):
     #Convert data to grayscale
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     
-
-    # Display the resulting frame
-    if SHOW_REAL_VIDEO:
-        cv2.imshow('frame',gray)
-
     #Reduce grayscale array to proper resolution
     reduced = cv2.resize(gray, (int(screen_width), int(screen_height)))
 
     #Plug in reduced resolution numpy array for ascii converter func
     converted = convert_to_ascii(reduced)
     print_array(converted)
-    print("")
+
+    # Display the resulting frame
+    if SHOW_REAL_VIDEO:
+        cv2.imshow('frame', reduced)
 
 # When everything done, release the capture
 cap.release()
