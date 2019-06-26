@@ -3,7 +3,7 @@ import os
 
 ########################################################################
 ### SETTING ###
-SHOW_REAL_VIDEO = True   # Set this to True to get real camera video from cv2
+SHOW_REAL_VIDEO = False   # Set this to True to get real camera video from cv2
 
 ########################################################################
 
@@ -27,11 +27,9 @@ while(cv2.waitKey(1) & 0xFF != ord('q')):
     #Get screensize for reduction
     screen_height,  screen_width = os.popen('stty size', 'r').read().split()
     
-    # Capture frame-by-frame
     #Get image data
     ret, frame = cap.read()
 
-    # Our operations on the frame come here
     #Convert data to grayscale
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     
